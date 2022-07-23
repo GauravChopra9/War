@@ -1,0 +1,149 @@
+import random
+suits = ('Spades', 'Clubs', 'Hearts', 'Diamonds')
+ranks = ('two', 'three', 'four','five','six', 'seven', 'eight', 'nine', 'ten', 'Jack', 'Queen', 'King', 'Ace')
+values = {'two': 2, 'three': 3, 'four': 4,'five': 5,'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10, 'Jack': 11, 'Queen': 12, 'King': 13, 'Ace': 14}
+
+
+class card:
+    
+    #The card class has some properties
+    #Each card should have a suit and a rank
+    
+    def __init__ (self, suit, rank):
+        self.suit = suit
+        self.rank = rank
+        self.value = values[rank]
+        
+        
+    def __str__(self):
+        return self.rank + " of " + self.suit
+        
+class deck: 
+    
+    
+    def __init__(self):
+        self.deckOfCards = []
+        
+        for item1 in suits:
+            for item2 in ranks:
+                createdCard = card(item1, item2)
+                self.deckOfCards.append(createdCard)
+            
+    def dealOne(self):
+        return self.deckOfCards.pop()
+        
+    def shuffleDeck(self): 
+        random.shuffle(self.deckOfCards)
+        
+class player:
+    
+    def __init__ (self, name):
+        self.name = name
+        self.playerCards = []
+        
+    def removeOne(self):
+         return self.playerCards.pop(0)
+    
+    def addCards(self, newCards):
+        if (type(newCards) == type([])):
+            self.playerCards.extend(newCards)
+            
+        else:
+            self.playerCards.append(newCards)
+        
+    def __str__(self):
+        return "Player " + self.name + " has " + str(len(self.playerCards)) + " cards."
+
+newDeck = deck()
+myCard = newDeck.dealOne()
+print(myCard)
+newPlayer = player('Jose')
+print(newPlayer)
+newPlayer.addCards([myCard, myCard, myCard])
+print(newPlayer)
+print(newPlayer.playerCards[0])
+newPlayer.playerCards[0].value
+
+#Game setup 
+
+#Create 2 objects or instances of the player class
+player1 = player('Gaurav')
+player2 = player('Avakash')
+#Create an instance of the deck class
+gameDeck = deck()
+#Shuffle the deck by calling the shuffle method within that class
+gameDeck.shuffleDeck()
+#Then split the deck by 2 between the 2 players
+for x in range(26):
+    player1.addCards(gameDeck.dealOne())
+    player2.addCards(gameDeck.dealOne())
+    
+game_is_on = True 
+roundNum = 0
+
+while (game_is_on):
+    roundNum = roundNum + 1
+    print('Round ' + str(roundNum))
+    
+    if (len(player1.playerCards) == 0):
+        print('Avakash won the game')
+        game_is_on = False
+        break
+        
+    if (len(player2.playerCards) == 0):
+        print('Gaurav won the game!')
+        game_is_on = False
+        break
+        
+    
+    #Starting a new round
+    GauravCards = []
+    GauravCards.append(player1.removeOne())
+    
+    AvakashCards = []
+    AvakashCards.append(player2.removeOne())
+    
+    war_is_on = True
+    while(war_is_on):
+        if (GauravCards[-1].value > AvakashCards[-1].value):
+            player1.addCards(GauravCards)
+            player1.addCards(AvakashCards)
+            war_is_on = False
+            break
+            
+        elif (GauravCards[-1].value < AvakashCards[-1].value):
+            player2.addCards(AvakashCards)
+            player2.addCards(GauravCards)
+            war_is_on = True
+            break
+            
+        else:
+            print("A war has started")
+            #Draw out 5 cards for each player
+            if(len(player1.playerCards) < 5):
+                print('Gaurav is unable to enter the war and hence loses!')
+                war_is_on = False
+                break
+            
+            elif(len(player2.playerCards) < 5):
+                print('Avakash is unable to enter the war and hence loses!')
+                war_is_on = False
+                break
+              
+            else:
+                for count in range(5):
+                    GauravCards.append(player1.removeOne())
+                    AvakashCards.append(player2.removeOne())
+              
+              
+                  
+              
+     
+    
+    
+        
+        
+    
+        
+    
+    
